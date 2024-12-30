@@ -1,0 +1,23 @@
+version: '3.8'
+services:
+  php:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    volumes:
+       - ./app:/app
+       - ./app/vendor:/app/vendor
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    networks:
+      - app-network
+    command: >
+      sh -c "composer install && composer dump-autoload --optimize 
+      && php bin/console doctrine:migrations:migrate --no-interaction
+      && php bin/console app:init-roller-coasters --no-interaction
+      && php -S 0.0.0.0:8000 -t public"
+
+
+
