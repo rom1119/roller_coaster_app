@@ -41,6 +41,8 @@
 
 # Build data
 /build/
+# Redis data
+/redis_data/
 
 # Composer PHAR
 /composer.phar
