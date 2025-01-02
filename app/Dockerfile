@@ -7,12 +7,17 @@ RUN apk add --update \
     git \
     unzip \
     libzip-dev \
-    icu-dev
+    icu-dev \ 
+    redis
 
 RUN docker-php-ext-install \
     pdo_mysql \
     intl \
     zip 
+
+RUN apk add --no-cache pcre-dev $PHPIZE_DEPS \
+    && pecl install redis \
+    && docker-php-ext-enable redis.so
 
 WORKDIR /app
 

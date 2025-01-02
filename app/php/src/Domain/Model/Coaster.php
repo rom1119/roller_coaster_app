@@ -1,35 +1,89 @@
 <?php
-// src/Entity/LoanCalculation.php
+declare(strict_types=1);
+
 
 namespace App\Domain\Model;
 
+use JMS\Serializer\Annotation as JMS;
 
-
-abstract class BaseCoaster
+#[JMS\ExclusionPolicy('all')]
+class Coaster implements \Serializable
 {
 
-    protected $id;
+    protected string $uuid;
 
+
+    #[JMS\Expose()]
     protected int $numberOfStaff;
 
+    #[JMS\Expose()]
     protected int $numberOfCustomers;
 
+    #[JMS\Expose()]
     protected int $distance;
     
+    #[JMS\Expose()]
     protected int $hourFrom;
     
+    #[JMS\Expose()]
     protected int $hourTo;
 
-    private Collection $wagons;
+    private array $wagons;
 
     
     public function __construct() {
-        $this->wagons = new ArrayCollection();
+        // $this->uuid = $uuid;
+        $this->wagons = [];
     }
 
-    public function getId(): ?int
+    public function serialize()
     {
-        return $this->id;
+        return serialize(
+            [
+                $this->uuid,
+                $this->numberOfStaff,
+                $this->numberOfCustomers,
+                $this->distance,
+                $this->hourFrom,
+                $this->hourTo,
+                $this->wagons,
+            ]
+        );
+    }
+
+    public function unserialize($dataStr)
+    {
+        list(
+            $this->uuid,
+            $this->numberOfStaff,
+            $this->numberOfCustomers,
+            $this->distance,
+            $this->hourFrom,
+            $this->hourTo,
+            $this->wagons,
+        ) = unserialize($dataStr);
+
+    }
+
+
+    /**
+     * Get the value of uuid
+     */ 
+    public function getUuid()
+    {
+        return $this->uuid;
+    }
+
+    /**
+     * Set the value of uuid
+     *
+     * @return  self
+     */ 
+    public function setUuid($uuid)
+    {
+        $this->uuid = $uuid;
+
+        return $this;
     }
 
     /**
@@ -151,4 +205,5 @@ abstract class BaseCoaster
 
         return $this;
     }
+
 }

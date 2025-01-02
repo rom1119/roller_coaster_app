@@ -7,18 +7,16 @@ services:
       dockerfile: ./Dockerfile
     volumes:
        - ./app/php:/app
-    ports:
-      - 9999:9000
     env_file:
        - ./app/app.env
   
   nginx:
     container_name: roller_coaster_nginx
     build: ./nginx/
+    depends_on:
+      - php
     ports:
       - 8088:80
-    volumes:
-      - ./app/php/:/app
 
 
 

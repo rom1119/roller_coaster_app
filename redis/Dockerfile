@@ -1,5 +1,4 @@
 FROM redis
-# WORKDIR /usr/local/etc/redis
 
-# COPY ./redis/redis.conf /usr/local/etc/redis/redis.conf
-CMD [ "redis-server", "--appendonly", "yes"]
+COPY ./redis.conf /usr/local/etc/redis/redis.conf
+CMD [ "redis-server", "/usr/local/etc/redis/redis.conf", "--appendonly", "yes"]

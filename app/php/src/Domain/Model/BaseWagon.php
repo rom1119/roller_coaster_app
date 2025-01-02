@@ -1,21 +1,45 @@
 <?php
-// src/Entity/LoanCalculation.php
+declare(strict_types=1);
 
 namespace App\Domain\Model;
 
 
-abstract class BaseWagon
+abstract class BaseWagon  implements \Serializable
 {
-    protected $id;
+    protected string $uuid;
 
     protected int $numberOfPlaces;
 
     protected float $speed;
 
-    private BaseCoaster $coaster;
+    private Coaster $coaster;
 
     
     public function __construct() {
+    }
+
+    public function serialize()
+    {
+        return serialize(
+            [
+                $this->uuid,
+                $this->numberOfPlaces,
+                $this->speed,
+                $this->coaster,
+
+            ]
+        );
+    }
+
+    public function unserialize($dataStr)
+    {
+        list(
+            $this->uuid,
+            $this->numberOfPlaces,
+            $this->speed,
+            $this->coaster,
+        ) = unserialize($dataStr);
+
     }
 
     public function getId(): ?int

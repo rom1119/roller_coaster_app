@@ -15,8 +15,9 @@ docker-compose 1.29.2
 ```
 # 2. Check the redis IP and set 
  ```
-docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' roller_coaster_redis
+docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' roller_coaster_redis
 ```
+next update this env variable "redis_host" from this file ./app/app.env
 # 3. run App 
 
 ```

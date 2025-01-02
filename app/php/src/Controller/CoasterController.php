@@ -4,14 +4,18 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-
+use App\Domain\Exception\GeneralRollerCoasterError;
+use App\Domain\Model\Coaster;
+use App\Domain\CoasterFacade;
 use Doctrine\ORM\EntityManagerInterface;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Controller\Annotations\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 
+#[AsController]
 class CoasterController extends AbstractFOSRestController
 {
     // public function __construct(
@@ -19,26 +23,28 @@ class CoasterController extends AbstractFOSRestController
     // ) {
     // }
 
-    #[Route('/api/coasters', methods:'GET')]
+    #[Route('/api/coasters', methods:'POST')]
     public function createAction(
-        // #[MapRequestPayload(
-        //     validationFailedStatusCode: Response::HTTP_BAD_REQUEST
-        // )] $arg
+        #[MapRequestPayload(
+            validationFailedStatusCode: Response::HTTP_BAD_REQUEST
+        )] Coaster $arg,
+        CoasterFacade $coasterFacade
         
         
     ) {
+        // $container->logError('asdas');
 
+        try {
 
-        // try {
+            $response = $coasterFacade->addCoaster($arg);
 
-        // } catch ( $e) {
-        //     $view = $this->view([
-        //         'error' => $e->getMessage()
-        //     ], 400);
-        //     return $this->handleView($view);
-        // }
-
-        $view = $this->view(['item' => 'OK'], 200);
+        } catch (GeneralRollerCoasterError $e) {
+            $view = $this->view([
+                'error' => $e->getMessage()
+            ], 400);
+            return $this->handleView($view);
+        }
+        $view = $this->view(['item' => 'ok ', 'aaa' => $response], 200);
         return $this->handleView($view);
     }
 

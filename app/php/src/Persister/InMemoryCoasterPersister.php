@@ -5,7 +5,7 @@ namespace App\Persister;
 use App\Domain\CoasterPersister;
 use App\Domain\Model\BaseCoaster;
 
-class InMemoryCoasterPersister implements CoasterPersister
+class InMemoryCoasterPersister
 {
 
 

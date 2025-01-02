@@ -1,11 +1,10 @@
 <?php
-// src/Entity/LoanCalculation.php
 
 namespace App\Persister;
 
-use App\Domain\Model\BaseCoaster;
+use App\Domain\Model\Coaster;
 
-class InMemoryCoaster extends BaseCoaster
+class InMemoryCoaster extends Coaster
 {
 
     public function setId(int $id) {
