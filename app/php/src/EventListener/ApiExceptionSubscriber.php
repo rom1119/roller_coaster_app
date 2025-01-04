@@ -2,9 +2,6 @@
 
 namespace App\EventListener;
 
-// use AppBundle\Api\ApiProblem;
-// use AppBundle\Api\ApiProblemException;
-
 use App\Api\ApiProblem;
 use App\Api\ApiProblemException;
 use Psr\Log\LoggerInterface;
@@ -19,11 +16,10 @@ class ApiExceptionSubscriber implements EventSubscriberInterface
     private $debug;
     private $logger;
 
-    // public function __construct($debug, LoggerInterface $logger)
-    public function __construct($debug)
+    public function __construct($debug, LoggerInterface $logger)
     {
         $this->debug = $debug;
-        // $this->logger = $logger;
+        $this->logger = $logger;
     }
 
     public function onKernelException(ExceptionEvent $event)
@@ -32,7 +28,6 @@ class ApiExceptionSubscriber implements EventSubscriberInterface
         if (strpos($event->getRequest()->getPathInfo(), '/api') !== 0) {
             return;
         }
-
         $e = $event->getThrowable();
 
         $statusCode = $e instanceof HttpExceptionInterface ? $e->getStatusCode() : 500;
@@ -42,7 +37,7 @@ class ApiExceptionSubscriber implements EventSubscriberInterface
             return;
         }
 
-        // $this->logException($e);
+        $this->logException($e);
 
         if ($e instanceof ApiProblemException) {
             $apiProblem = $e->getApiProblem();
@@ -91,15 +86,15 @@ class ApiExceptionSubscriber implements EventSubscriberInterface
      *
      * @param \Exception $exception
      */
-    // private function logException(\Exception $exception)
-    // {
-    //     $message = sprintf('Uncaught PHP Exception %s: "%s" at %s line %s', get_class($exception), $exception->getMessage(), $exception->getFile(), $exception->getLine());
-    //     $isCritical = !$exception instanceof HttpExceptionInterface || $exception->getStatusCode() >= 500;
-    //     $context = array('exception' => $exception);
-    //     if ($isCritical) {
-    //         $this->logger->critical($message, $context);
-    //     } else {
-    //         $this->logger->error($message, $context);
-    //     }
-    // }
+    private function logException(\Exception $exception)
+    {
+        $message = sprintf('Uncaught PHP Exception %s: "%s" at %s line %s', get_class($exception), $exception->getMessage(), $exception->getFile(), $exception->getLine());
+        $isCritical = !$exception instanceof HttpExceptionInterface || $exception->getStatusCode() >= 500;
+        $context = array('exception' => $exception);
+        if ($isCritical) {
+            $this->logger->critical($message, $context);
+        } else {
+            $this->logger->error($message, $context);
+        }
+    }
 }

@@ -36,13 +36,12 @@ services:
             - '%redis_host%'
             - '%redis_port%'
             - '%redis_pass%'
+            - '%kernel.environment%'
 
     App\EventListener\ApiExceptionSubscriber:
-        arguments: 
-            - '%kernel.debug%'
+        arguments: ['%kernel.debug%', '@logger']
         tags:
             - { name: kernel.event_subscriber }
-        # arguments: ['%kernel.debug%', '@logger']
 
 
     # add more service definitions when explicit configuration is needed

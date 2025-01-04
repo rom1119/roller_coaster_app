@@ -14,6 +14,7 @@ class RedisConnector
         $this->redis = new \Redis();
         $this->redis->connect($redisHost, (int)$redisPort);
         $this->redis->auth($redisPass);
+
     }
 
     public function getObjectByKey(string $namespace, string $key)
