@@ -22,8 +22,12 @@ class RedisCoasterPersister implements CoasterPersister
     }
 
 
-    public function findCoaster(string $uuid): Coaster
+    public function findCoaster(string $uuid): ?Coaster
     {
-        return $this->redis->getObjectByKey(self::$namespace, $uuid);
+        $model = $this->redis->getObjectByKey(self::$namespace, $uuid);
+        if (!$model) {
+            return null;
+        }
+        return $model;
     }
 }

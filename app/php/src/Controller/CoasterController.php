@@ -11,6 +11,7 @@ use App\Domain\CoasterFacade;
 use App\Domain\Model\Wagon;
 use App\Form\CreateCoasterType;
 use App\Form\CreateWagonType;
+use App\Form\UpdateCoasterType;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Controller\Annotations\Route;
 use JMS\Serializer\SerializerInterface;
@@ -44,6 +45,24 @@ class CoasterController extends AbstractFOSRestController
         return $this->createApiResponse($data, Response::HTTP_CREATED);
     }
 
+    #[Route('/api/coasters/{coasterId}', methods:'PUT')]
+    public function updateAction(
+        string $coasterId,
+        Request $request
+    ) {
+
+        $model = $this->coasterFacade->findCoaster($coasterId);
+        if (!$model) {
+            throw $this->createNotFoundException();
+        }
+        $form = $this->createForm(UpdateCoasterType::class, $model);
+        $this->processRequest($request, $form);
+
+        $data = $this->coasterFacade->updateCoaster($model, $coasterId);
+
+        return $this->createApiResponse($data, Response::HTTP_OK);
+    }
+
     #[Route('/api/coasters/{coasterId}/wagons', methods:'POST')]
     public function addWagonAction(
         string $coasterId,
@@ -57,6 +76,18 @@ class CoasterController extends AbstractFOSRestController
         $data = $this->coasterFacade->addWagon($model, $coasterId);
 
         return $this->createApiResponse($data, Response::HTTP_OK);
+    }
+
+    #[Route('/api/coasters/{coasterId}/wagons/{wagonId}', methods: ['DELETE'])]
+    public function deleteWagonAction(         
+        string $coasterId,
+        string $wagonId,
+        Request $request
+    )
+    {
+        $this->coasterFacade->deleteWagon($coasterId, $wagonId);
+
+        return $this->createApiResponse(null, Response::HTTP_NO_CONTENT);
     }
 
     protected function createApiResponse($data, int $status = Response::HTTP_CREATED) : Response {
@@ -76,7 +107,7 @@ class CoasterController extends AbstractFOSRestController
         }
 
         $clearMissing = $request->getMethod() != 'PATCH';
-        $form->submit($data, $clearMissing);
+        $form->submit($data);
 
         if (!$form->isValid()) {
             $this->throwApiProblemValidationException($form);
@@ -113,13 +144,6 @@ class CoasterController extends AbstractFOSRestController
         $apiProblem->set('errors', $errors);
 
         throw new ApiProblemException($apiProblem);
-    }
-
-    #[Route('/api/exclude/{id}', name: 'exclude', methods: ['DELETE'])]
-    public function deleteAction( ): JsonResponse
-    {
-
-        return new JsonResponse(['message' => ' excluded']);
     }
 
 

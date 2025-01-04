@@ -12,11 +12,35 @@ class CoasterFacade
     
    }
 
-   public function addCoaster(Coaster $coaster) : Coaster {
+   public function findCoaster(string $coasterUuid): ?Coaster
+   {
+      return $this->coasterPersister->findCoaster($coasterUuid);
+
+   }
+
+   public function updateCoaster(Coaster $model,string $coasterUuid): Coaster
+   {
+      $coaster = $this->coasterPersister->findCoaster($coasterUuid);
+      return $this->coasterPersister->persist($model);
+
+
+   }
+   public function addCoaster(Coaster $coaster) : Coaster 
+   {
         $coaster->setUuid(uniqid());
         return $this->coasterPersister->persist($coaster);
    }
-   
+
+   public function deleteWagon($coasterUuid, string $wagonId): Coaster
+   {
+      $coaster = $this->coasterPersister->findCoaster($coasterUuid);
+      $coaster->deleteWagon($wagonId);
+
+      $this->coasterPersister->persist($coaster);
+
+      return $coaster;
+
+   }
    public function addWagon(Wagon $wagon, string $coasterUuid) : Coaster {
       $coaster = $this->coasterPersister->findCoaster($coasterUuid);
       $wagon->setUuid(uniqid());

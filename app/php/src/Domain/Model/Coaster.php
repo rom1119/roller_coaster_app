@@ -13,22 +13,28 @@ class Coaster implements \Serializable
 
     #[JMS\SerializedName("liczba_personelu")]
     #[Assert\Positive]
-    protected int $numberOfStaff;
+    #[Assert\NotBlank()]
+    protected ?int $numberOfStaff;
     
     #[JMS\SerializedName("liczba_klientow")]
     #[Assert\Positive]
-    protected int $numberOfCustomers;
+    #[Assert\NotBlank()]
+    protected ?int $numberOfCustomers;
     
     #[JMS\SerializedName("dl_trasy")]
     #[Assert\Positive]
-    protected int $distance;
+    #[Assert\NotBlank()]
+    protected ?int $distance;
     
     #[JMS\SerializedName("godziny_od")]
-
-    protected string $hourFrom;
+    #[Assert\Time(withSeconds:false)]
+    #[Assert\NotBlank()]
+    protected ?string $hourFrom;
     
     #[JMS\SerializedName("godziny_do")]
-    protected string $hourTo;
+    #[Assert\Time(withSeconds:false)]
+    #[Assert\NotBlank()]
+    protected ?string $hourTo;
     
     #[JMS\SerializedName("wagony")]
     private array $wagons = [];
@@ -211,6 +217,11 @@ class Coaster implements \Serializable
     public function addWagon(Wagon $wagon) 
     {
         $this->wagons[$wagon->getUuid()] = $wagon;
+    }
+    
+    public function deleteWagon(string $wagonId) 
+    {
+        unset($this->wagons[$wagonId]);
     }
 
 }
