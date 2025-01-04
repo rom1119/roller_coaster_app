@@ -31,11 +31,18 @@ services:
         
     Symfony\Component\DependencyInjection\ContainerInterface: '@service_container'
 
-    App\RedisConnector: 
+    App\RedisConnector:     
         arguments:
             - '%redis_host%'
             - '%redis_port%'
             - '%redis_pass%'
+
+    App\EventListener\ApiExceptionSubscriber:
+        arguments: 
+            - '%kernel.debug%'
+        tags:
+            - { name: kernel.event_subscriber }
+        # arguments: ['%kernel.debug%', '@logger']
 
 
     # add more service definitions when explicit configuration is needed

@@ -3,16 +3,25 @@ declare(strict_types=1);
 
 namespace App\Domain\Model;
 
+use JMS\Serializer\Annotation as JMS;
+use Symfony\Component\Validator\Constraints as Assert;
 
-abstract class BaseWagon  implements \Serializable
+
+#[JMS\ExclusionPolicy('all')]
+class Wagon  implements \Serializable
 {
+    #[JMS\Expose()]
     protected string $uuid;
 
+    #[JMS\Expose()]
+    #[JMS\SerializedName("ilosc_miejsc")]
+    #[Assert\Positive]
     protected int $numberOfPlaces;
-
+    
+    #[JMS\Expose()]
+    #[JMS\SerializedName("predkosc_wagonu")]
+    #[Assert\Positive]
     protected float $speed;
-
-    private Coaster $coaster;
 
     
     public function __construct() {
@@ -25,8 +34,6 @@ abstract class BaseWagon  implements \Serializable
                 $this->uuid,
                 $this->numberOfPlaces,
                 $this->speed,
-                $this->coaster,
-
             ]
         );
     }
@@ -37,16 +44,29 @@ abstract class BaseWagon  implements \Serializable
             $this->uuid,
             $this->numberOfPlaces,
             $this->speed,
-            $this->coaster,
         ) = unserialize($dataStr);
 
     }
 
-    public function getId(): ?int
+    /**
+     * Get the value of uuid
+     */ 
+    public function getUuid()
     {
-        return $this->id;
+        return $this->uuid;
     }
 
+    /**
+     * Set the value of uuid
+     *
+     * @return  self
+     */ 
+    public function setUuid($uuid)
+    {
+        $this->uuid = $uuid;
+
+        return $this;
+    }
 
     /**
      * Get the value of numberOfPlaces
@@ -88,23 +108,5 @@ abstract class BaseWagon  implements \Serializable
         return $this;
     }
 
-    /**
-     * Get the value of coaster
-     */ 
-    public function getCoaster()
-    {
-        return $this->coaster;
-    }
-
-    /**
-     * Set the value of coaster
-     *
-     * @return  self
-     */ 
-    public function setCoaster($coaster)
-    {
-        $this->coaster = $coaster;
-
-        return $this;
-    }
+    
 }

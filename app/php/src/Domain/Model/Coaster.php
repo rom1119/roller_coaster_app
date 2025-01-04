@@ -1,34 +1,37 @@
 <?php
 declare(strict_types=1);
 
-
 namespace App\Domain\Model;
 
 use JMS\Serializer\Annotation as JMS;
+use Symfony\Component\Validator\Constraints as Assert;
 
-#[JMS\ExclusionPolicy('all')]
 class Coaster implements \Serializable
 {
 
     protected string $uuid;
 
-
-    #[JMS\Expose()]
+    #[JMS\SerializedName("liczba_personelu")]
+    #[Assert\Positive]
     protected int $numberOfStaff;
-
-    #[JMS\Expose()]
+    
+    #[JMS\SerializedName("liczba_klientow")]
+    #[Assert\Positive]
     protected int $numberOfCustomers;
-
-    #[JMS\Expose()]
+    
+    #[JMS\SerializedName("dl_trasy")]
+    #[Assert\Positive]
     protected int $distance;
     
-    #[JMS\Expose()]
-    protected int $hourFrom;
-    
-    #[JMS\Expose()]
-    protected int $hourTo;
+    #[JMS\SerializedName("godziny_od")]
 
-    private array $wagons;
+    protected string $hourFrom;
+    
+    #[JMS\SerializedName("godziny_do")]
+    protected string $hourTo;
+    
+    #[JMS\SerializedName("wagony")]
+    private array $wagons = [];
 
     
     public function __construct() {
@@ -202,8 +205,12 @@ class Coaster implements \Serializable
     public function setWagons($wagons)
     {
         $this->wagons = $wagons;
-
+        
         return $this;
+    }
+    public function addWagon(Wagon $wagon) 
+    {
+        $this->wagons[$wagon->getUuid()] = $wagon;
     }
 
 }

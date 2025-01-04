@@ -8,6 +8,7 @@ interface CoasterPersister
 {
 
     public function persist(Coaster $model): Coaster;
+    public function findCoaster(string $uuid): Coaster;
 
 
 }

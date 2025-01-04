@@ -16,7 +16,14 @@ class RedisConnector
         $this->redis->auth($redisPass);
     }
 
-    public function getObjectsByKey(string $key, callable $callback)
+    public function getObjectByKey(string $namespace, string $key)
+    {
+        $response = $this->redis->get($namespace . ':' . $key);
+
+        return unserialize($response);
+    }
+
+    public function cacheObjectByKey(string $key, callable $callback)
     {
         $response = $this->redis->get($key);
 

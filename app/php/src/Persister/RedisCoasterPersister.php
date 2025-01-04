@@ -22,9 +22,8 @@ class RedisCoasterPersister implements CoasterPersister
     }
 
 
-    public function getAllSchedules(string $filter = 'all', int $limit = 4): array
+    public function findCoaster(string $uuid): Coaster
     {
-        return [];
-        // return $this->em->getRepository(Coaster::class)->findByFilter($filter, $limit);
+        return $this->redis->getObjectByKey(self::$namespace, $uuid);
     }
 }
