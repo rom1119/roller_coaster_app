@@ -13,11 +13,18 @@ docker-compose 1.29.2
 ```
   docker-compose -f docker-compose-redis.yml up --build
 ```
-# 2. Check the redis IP and set 
+# 2. Check the redis IP and set address IP for redis server on the prod and dev environment app
+For DEV
  ```
-docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' roller_coaster_redis
+docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' roller_coaster_redis_dev
 ```
-next update this env variable "redis_host" from this file ./app/app.env
+next update this env variable "redis_host" from this file ./app/app_dev.env
+
+and next for PROD 
+ ```
+docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' roller_coaster_redis_prod
+```
+next update this env variable "redis_host" from this file ./app/app_prod.env
 # 3. run App 
 
 ```

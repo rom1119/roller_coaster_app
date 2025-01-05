@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 
 namespace App\EventListener;
 
@@ -31,11 +33,11 @@ class ApiExceptionSubscriber implements EventSubscriberInterface
         $e = $event->getThrowable();
 
         $statusCode = $e instanceof HttpExceptionInterface ? $e->getStatusCode() : 500;
-
         // allow 500 errors to be thrown
         if ($this->debug && $statusCode >= 500) {
             return;
         }
+
 
         $this->logException($e);
 
@@ -86,9 +88,10 @@ class ApiExceptionSubscriber implements EventSubscriberInterface
      *
      * @param \Exception $exception
      */
-    private function logException(\Exception $exception)
+    private function logException(\Throwable $exception)
     {
         $message = sprintf('Uncaught PHP Exception %s: "%s" at %s line %s', get_class($exception), $exception->getMessage(), $exception->getFile(), $exception->getLine());
+
         $isCritical = !$exception instanceof HttpExceptionInterface || $exception->getStatusCode() >= 500;
         $context = array('exception' => $exception);
         if ($isCritical) {

@@ -16,7 +16,6 @@ use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Controller\Annotations\Route;
 use JMS\Serializer\SerializerInterface;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
@@ -72,7 +71,6 @@ class CoasterController extends AbstractFOSRestController
         $model = new Wagon();
         $form = $this->createForm(CreateWagonType::class, $model);
         $this->processRequest($request, $form);
-
         $data = $this->coasterFacade->addWagon($model, $coasterId);
 
         return $this->createApiResponse($data, Response::HTTP_OK);

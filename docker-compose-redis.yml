@@ -1,11 +1,24 @@
 version: '3.8'
 services:
-  redis:
-    container_name: roller_coaster_redis
+  redis-dev:
+    container_name: roller_coaster_redis_dev
     build:
       context: ./redis
+      args:
+        ENV_NAME: "dev"
     ports:
       - "6666:6379"
     volumes:
-      - "./redis_data:/data"
+      - "./redis_data/dev:/data"
+      
+  redis-prod:
+    container_name: roller_coaster_redis_prod
+    build:
+      context: ./redis
+      args:
+        ENV_NAME: "prod"
+    ports:
+      - "6667:6379"
+    volumes:
+      - "./redis_data/prod:/data"
 

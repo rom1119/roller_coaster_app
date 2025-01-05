@@ -1,22 +1,51 @@
 version: '3.8'
 services:
-  php:
-    container_name: roller_coaster_php
+  php-dev:
+    container_name: roller_coaster_php_dev
     build:
       context: ./app
       dockerfile: ./Dockerfile
+      
+    environment:
+      - APP_ENV=dev
     volumes:
        - ./app/php:/app
     env_file:
-       - ./app/app.env
+       - ./app/app_dev.env
   
-  nginx:
-    container_name: roller_coaster_nginx
-    build: ./nginx/
+  nginx-dev:
+    container_name: roller_coaster_nginx_dev
+    build:
+      context: ./nginx/
+      args:
+        ENV_NAME: "dev"
     depends_on:
-      - php
+      - php-dev
     ports:
       - 8088:80
+  
+  php-prod:
+    container_name: roller_coaster_php_prod
+    build:
+      context: ./app
+      dockerfile: ./Dockerfile
+    environment:
+      - APP_ENV=prod
+    volumes:
+       - ./app/php:/app
+    env_file:
+       - ./app/app_prod.env
+  
+  nginx-prod:
+    container_name: roller_coaster_nginx_prod
+    build:
+      context: ./nginx/
+      args:
+        ENV_NAME: "prod"
+    depends_on:
+      - php-prod
+    ports:
+      - 8099:80
 
 
 
