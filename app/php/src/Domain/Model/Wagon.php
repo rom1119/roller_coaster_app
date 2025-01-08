@@ -11,7 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Wagon  implements \Serializable
 {
     #[JMS\Expose()]
-    protected string $uuid;
+    protected WagonID $uuid;
 
     #[JMS\Expose()]
     #[JMS\SerializedName("ilosc_miejsc")]

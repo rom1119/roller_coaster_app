@@ -38,11 +38,35 @@ class RedisConnector
         return unserialize($response);
     }
 
+    public function getListByNamespace(string $namespace): array
+    {
+        $keys = $this->redis->keys($namespace . ':*');
+        $result = [];
+        foreach($keys as $key) {
+            $result[] = unserialize($this->redis->get($key));
+        }
+        return $result;
+    }
+
     public function saveObject(string $namespace, string $key, object $dto): object 
     {
         $this->redis->set($namespace . ':' .$key, serialize($dto));
 
         return $dto;
+
+    }
+    public function setKey(string $namespace, string $key, object $val): object
+    {
+        $this->redis->set($namespace . ':' . $key, $val);
+
+        return $val;
+
+    }
+    public function publishMsg(string $key, $val): object 
+    {
+        $this->redis->publish($key,  serialize($val));
+
+        return $val;
 
     }
 

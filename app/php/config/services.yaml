@@ -31,6 +31,14 @@ services:
         
     Symfony\Component\DependencyInjection\ContainerInterface: '@service_container'
 
+    App\RedisMonitoring: 
+        arguments:
+            - '@App\RedisConnector'
+            - '@App\Domain\DomainEventListener'
+            - '%redis_host%'
+            - '%redis_port%'
+            - '%redis_pass%'
+
     App\RedisConnector:     
         arguments:
             - '%redis_host%'
@@ -43,6 +51,23 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
+    # this config only applies to the services created by this file
+    _instanceof:
+        # services whose classes are instances of CustomInterface will be tagged automatically
+        App\Domain\DomainEventHandler:
+            tags: ['domain.event_handler']
+            
+        App\Domain\CoasterWorkingConstraint:
+            tags: ['domain.coaster_working_constraint']
 
+
+    App\Domain\DomainEventListener:
+        arguments:
+        - !tagged 'domain.event_handler'
+        
+        
+    App\Domain\ConstraintChecker:
+        arguments:
+        - !tagged 'domain.coaster_working_constraint'
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

@@ -14,14 +14,10 @@ class RollerCoasterLogger
     public function __construct(LoggerInterface $logger)
     {
         $this->logger = $logger;
-
-        // $stream_handler = new StreamHandler(__DIR__ . "/../var/logs/error.log");
-        // $this->logger->pushHandler($stream_handler);
     }
 
     public function logError(string $msg, array $context = []): void
     {
         $this->logger->error($msg, $context);
-
     }
 }

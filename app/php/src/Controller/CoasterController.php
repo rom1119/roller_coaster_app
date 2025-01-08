@@ -8,10 +8,14 @@ use App\Api\ApiProblem;
 use App\Api\ApiProblemException;
 use App\Domain\Model\Coaster;
 use App\Domain\CoasterFacade;
+use App\Domain\Model\CoasterID;
 use App\Domain\Model\Wagon;
+use App\Domain\Model\WagonID;
+use App\Domain\RollerCoasterLogger;
 use App\Form\CreateCoasterType;
 use App\Form\CreateWagonType;
 use App\Form\UpdateCoasterType;
+use App\Persister\RedisCoasterPersister;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Controller\Annotations\Route;
 use JMS\Serializer\SerializerInterface;
@@ -21,14 +25,45 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
+use React\EventLoop\Loop;
+use Clue\React\Redis\Factory as RedisFactory;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+
 #[AsController]
 class CoasterController extends AbstractFOSRestController
 {
     public function __construct(
         private SerializerInterface $serializer,
         private ValidatorInterface $validator,
+        private ContainerInterface $c,
         private CoasterFacade $coasterFacade
     ) {
+    }
+
+    #[Route('/api/test', methods:'GET')]
+    public function testAction(
+        Request $request,
+        RedisCoasterPersister $redisCoasterPersister,
+        ) 
+    {
+        $redisCoasterPersister->findAll();
+        // $loop = Loop::get();
+        // $redisFactory = new RedisFactory($loop);
+        $host = $this->c->getParameter('redis_host');
+        $port = $this->c->getParameter('redis_port');
+        // $redis = new \Redis();
+        // $redis->connect($host, (int)$port);
+        // $redis->auth('foobared');
+
+        // $redis->set('last_message', $request->query->get('asd'));
+
+        // $redis->publish('new_event', $request->query->get('asd'));
+        // $redis = $redisFactory->createLazyClient('redis://192.168.16.5:6379?password=foobared');
+
+                // $loop->run();
+
+
+        return $this->createApiResponse(['a' => 'ok'], Response::HTTP_CREATED);
     }
 
     #[Route('/api/coasters', methods:'POST')]
@@ -50,14 +85,14 @@ class CoasterController extends AbstractFOSRestController
         Request $request
     ) {
 
-        $model = $this->coasterFacade->findCoaster($coasterId);
+        $model = $this->coasterFacade->findCoaster(CoasterID::createFrom($coasterId));
         if (!$model) {
             throw $this->createNotFoundException();
         }
         $form = $this->createForm(UpdateCoasterType::class, $model);
         $this->processRequest($request, $form);
 
-        $data = $this->coasterFacade->updateCoaster($model, $coasterId);
+        $data = $this->coasterFacade->updateCoaster($model, CoasterID::createFrom($coasterId));
 
         return $this->createApiResponse($data, Response::HTTP_OK);
     }
@@ -71,7 +106,7 @@ class CoasterController extends AbstractFOSRestController
         $model = new Wagon();
         $form = $this->createForm(CreateWagonType::class, $model);
         $this->processRequest($request, $form);
-        $data = $this->coasterFacade->addWagon($model, $coasterId);
+        $data = $this->coasterFacade->addWagon($model, CoasterID::createFrom($coasterId));
 
         return $this->createApiResponse($data, Response::HTTP_OK);
     }
@@ -83,7 +118,7 @@ class CoasterController extends AbstractFOSRestController
         Request $request
     )
     {
-        $this->coasterFacade->deleteWagon($coasterId, $wagonId);
+        $this->coasterFacade->deleteWagon(CoasterID::createFrom($coasterId), WagonID::createFrom($wagonId));
 
         return $this->createApiResponse(null, Response::HTTP_NO_CONTENT);
     }
@@ -143,7 +178,5 @@ class CoasterController extends AbstractFOSRestController
 
         throw new ApiProblemException($apiProblem);
     }
-
-
 
 }
