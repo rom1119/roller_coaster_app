@@ -14,7 +14,7 @@ class ConstraintChecker
     {
     }
  
-   public function check(Coaster $coaster): array{
+   public function check(Coaster $coaster): array {
 
       $messages = [];
       /** @var CoasterWorkingConstraint $contraint */

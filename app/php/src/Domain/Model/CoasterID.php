@@ -5,7 +5,7 @@ namespace App\Domain\Model;
 
 
 
-class CoasterID implements \Serializable
+class CoasterID
 {
     protected string $uuid;
    
@@ -21,21 +21,19 @@ class CoasterID implements \Serializable
         return new self($uuid);
     }
 
-    public function serialize()
+    public function __serialize()
     {
-        return serialize(
+        return 
             [
-                $this->uuid
+                $this->uuid,
             ]
-        );
+        ;
     }
 
-    public function unserialize($dataStr)
+    public function __unserialize(array $data)
     {
-        list(
-            $this->uuid,
-        ) = unserialize($dataStr);
-
+        
+        $this->uuid = $data[0];
     }
 
     /**

@@ -31,10 +31,15 @@ services:
         
     Symfony\Component\DependencyInjection\ContainerInterface: '@service_container'
 
+    # notification_logger:
+    #     class: Psr\Log\LoggerInterface
+    #     factory: ['@monolog.logger', notification]
+
     App\RedisMonitoring: 
         arguments:
             - '@App\RedisConnector'
             - '@App\Domain\DomainEventListener'
+            - '@App\Domain\Statistics\StatisticsFactory'
             - '%redis_host%'
             - '%redis_port%'
             - '%redis_pass%'

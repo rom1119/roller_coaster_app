@@ -8,6 +8,7 @@ use App\Domain\Event\CoasterChange;
 use App\Domain\Event\CoasterCreate;
 use App\Domain\Event\CoasterStaffChange;
 use App\Domain\Event\WagonCreate;
+use App\Domain\Event\WagonDelete;
 use App\Domain\Exception\GeneralRollerCoasterError;
 use App\Domain\Model\Coaster;
 use App\Domain\Model\CoasterID;
@@ -35,7 +36,7 @@ class CoasterFacade
       if (!$coaster) {
          throw new GeneralRollerCoasterError('Not found coaster w ID = ' . $coasterUuid);
       }
-      $event = new CoasterChange(clone $model);
+      $event = new CoasterChange(clone $coaster);
       $this->monitoringPubSub->emitEvent($event);
 
       return $this->coasterPersister->persist($model);
@@ -54,9 +55,12 @@ class CoasterFacade
    public function deleteWagon(CoasterID $coasterUuid, WagonID $wagonId): Coaster
    {
       $coaster = $this->coasterPersister->findCoaster($coasterUuid);
-      $coaster->deleteWagon($wagonId);
+      $wagon = $coaster->deleteWagon($wagonId);
 
       $this->coasterPersister->persist($coaster);
+
+      $event = new WagonDelete(clone $coaster, clone $wagon);
+      $this->monitoringPubSub->emitEvent($event);
 
       return $coaster;
 
@@ -67,6 +71,7 @@ class CoasterFacade
       $coaster->addWagon($wagon);
 
       $this->coasterPersister->persist($coaster);
+
       $event = new WagonCreate(clone $coaster, clone $wagon);
       $this->monitoringPubSub->emitEvent($event);
       return $coaster;

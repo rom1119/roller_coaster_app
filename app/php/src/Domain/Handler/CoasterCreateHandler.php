@@ -23,9 +23,9 @@ class CoasterCreateHandler  extends DomainEventHandler
         $coster = $this->coasterPersister->findCoaster($event->getCoaster()->getUuid());
 
         $msg = 'Utworzono nową kolejkę ' . $event->getCoaster();
-        echo $msg;
+        $this->printMsg($msg);
 
-        $this->logger->info($msg);
+        $this->logger->logEvent($msg);
     }
 
 

@@ -26,26 +26,23 @@ class WagonDelete  implements DomainEvent
 
     public function __serialize()
     {
-        return serialize(
+        return
             [
                 $this->coaster,
                 $this->wagonOld,
             ]
-        );
+        ;
     }
 
-    public function __unserialize($dataStr)
+    public function __unserialize($data)
     {
-        list(
-            $this->coaster,
-            $this->wagonOld,
-        ) = unserialize($dataStr);
-
+        $this->coaster = $data[0];
+        $this->wagonOld = $data[1];
     }
+
     public function getName(): string
     {
         return WagonDelete::class;
     }
-
 
 }

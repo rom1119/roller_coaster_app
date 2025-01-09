@@ -1,0 +1,12 @@
+monolog:
+    channels: ['notification']
+
+    handlers:
+        # this "file_log" key could be anything
+        file_log_notification:
+            type: stream
+            # log to var/log/(environment).log
+            path: "%kernel.logs_dir%/%kernel.environment%_notifications.log"
+            channels: [notification]  # Tylko zdarzenia z kanału 'custom'
+
+            # log *all* messages (debug is lowest level)

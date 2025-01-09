@@ -6,7 +6,7 @@ namespace App\Domain\Model;
 use JMS\Serializer\Annotation as JMS;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class Coaster implements \Serializable
+class Coaster
 {
     protected CoasterID $uuid;
 
@@ -44,9 +44,9 @@ class Coaster implements \Serializable
         $this->wagons = [];
     }
 
-    public function serialize()
+    public function __serialize()
     {
-        return serialize(
+        return 
             [
                 $this->uuid,
                 $this->numberOfStaff,
@@ -56,21 +56,19 @@ class Coaster implements \Serializable
                 $this->hourTo,
                 $this->wagons,
             ]
-        );
+        ;
     }
 
-    public function unserialize($dataStr)
+    public function __unserialize(array $data)
     {
-        list(
-            $this->uuid,
-            $this->numberOfStaff,
-            $this->numberOfCustomers,
-            $this->distance,
-            $this->hourFrom,
-            $this->hourTo,
-            $this->wagons,
-        ) = unserialize($dataStr);
-
+        
+        $this->uuid = $data[0];
+        $this->numberOfStaff = $data[1];
+        $this->numberOfCustomers = $data[2];
+        $this->distance = $data[3];
+        $this->hourFrom = $data[4];
+        $this->hourTo = $data[5];
+        $this->wagons = $data[6];
     }
 
     public function __toString()
@@ -80,18 +78,13 @@ class Coaster implements \Serializable
             $wagonsStr .= $wagon . ", \n";
         }
         $wagonsStr .= ']';
-        $str = "
-            uuid={$this->uuid}
-            numberOfStaff=$this->numberOfStaff,
-            numberOfCustomers=$this->numberOfCustomers,
-            distance=$this->distance,
-            hourFrom=$this->hourFrom,
-            hourTo=$this->hourTo,
-            wagons=$wagonsStr,
-            ";
+        $str = "{ " .
+        "uuid={$this->uuid},  numberOfStaff=$this->numberOfStaff, numberOfCustomers=$this->numberOfCustomers," .
+        " distance=$this->distance, hourFrom=$this->hourFrom, hourTo=$this->hourTo, wagons=$wagonsStr" .
+        "}";
 
         return $str;
-        // ];
+
     }
 
 
@@ -194,9 +187,72 @@ class Coaster implements \Serializable
         $this->wagons[(string)$wagon->getUuid()] = $wagon;
     }
     
-    public function deleteWagon(WagonID $wagonId) 
+    public function deleteWagon(WagonID $wagonId): Wagon 
     {
+        $wagon = $this->wagons[(string)$wagonId];
         unset($this->wagons[(string)$wagonId]);
+
+        return $wagon;
     }
 
+
+    /**
+     * Set the value of numberOfStaff
+     *
+     * @return  self
+     */ 
+    public function setNumberOfStaff($numberOfStaff)
+    {
+        $this->numberOfStaff = $numberOfStaff;
+
+        return $this;
+    }
+
+    /**
+     * Set the value of numberOfCustomers
+     *
+     * @return  self
+     */ 
+    public function setNumberOfCustomers($numberOfCustomers)
+    {
+        $this->numberOfCustomers = $numberOfCustomers;
+
+        return $this;
+    }
+
+    /**
+     * Set the value of distance
+     *
+     * @return  self
+     */ 
+    public function setDistance($distance)
+    {
+        $this->distance = $distance;
+
+        return $this;
+    }
+
+    /**
+     * Set the value of hourFrom
+     *
+     * @return  self
+     */ 
+    public function setHourFrom($hourFrom)
+    {
+        $this->hourFrom = $hourFrom;
+
+        return $this;
+    }
+
+    /**
+     * Set the value of hourTo
+     *
+     * @return  self
+     */ 
+    public function setHourTo($hourTo)
+    {
+        $this->hourTo = $hourTo;
+
+        return $this;
+    }
 }

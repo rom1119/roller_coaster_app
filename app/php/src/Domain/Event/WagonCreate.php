@@ -26,20 +26,18 @@ class WagonCreate  implements DomainEvent
 
     public function __serialize()
     {
-        return serialize(
+        return
             [
                 $this->coasterOld,
                 $this->wagon,
             ]
-        );
+        ;
     }
 
-    public function __unserialize($dataStr)
+    public function __unserialize($data)
     {
-        list(
-            $this->coasterOld,
-            $this->wagon,
-            ) = unserialize($dataStr);
+        $this->coasterOld = $data[0];
+        $this->wagon = $data[1];
 
     }
     public function getName(): string

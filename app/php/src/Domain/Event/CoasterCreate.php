@@ -20,18 +20,16 @@ class CoasterCreate  implements DomainEvent
 
     public function __serialize()
     {
-        return serialize(
+        return 
             [
                 $this->coasterOld,
             ]
-        );
+        ;
     }
 
-    public function __unserialize($dataStr)
+    public function __unserialize($data)
     {
-        list(
-            $this->coasterOld,
-        ) = unserialize($dataStr);
+        $this->coasterOld = $data[0];
 
     }
     public function getName(): string

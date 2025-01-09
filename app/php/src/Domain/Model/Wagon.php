@@ -8,7 +8,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 
 #[JMS\ExclusionPolicy('all')]
-class Wagon  implements \Serializable
+class Wagon
 {
     #[JMS\Expose()]
     protected WagonID $uuid;
@@ -27,24 +27,32 @@ class Wagon  implements \Serializable
     public function __construct() {
     }
 
-    public function serialize()
+    public function __serialize()
     {
-        return serialize(
+        return 
             [
                 $this->uuid,
                 $this->numberOfPlaces,
                 $this->speed,
             ]
-        );
+        ;
     }
 
-    public function unserialize($dataStr)
+    public function __unserialize($data)
     {
-        list(
-            $this->uuid,
-            $this->numberOfPlaces,
-            $this->speed,
-        ) = unserialize($dataStr);
+        $this->uuid = $data[0];
+        $this->numberOfPlaces = $data[1];
+        $this->speed = $data[2];
+    }
+
+    public function __toString()
+    {
+
+        $str = "{ " .
+        "uuid={$this->uuid}, numberOfPlaces=$this->numberOfPlaces, speed=$this->speed" .
+        "}";
+
+        return $str;
 
     }
 

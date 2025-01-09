@@ -5,7 +5,7 @@ namespace App\Domain\Model;
 
 
 
-class WagonID implements \Serializable
+class WagonID
 {
     protected string $uuid;
    
@@ -21,21 +21,17 @@ class WagonID implements \Serializable
         return new self($uuid);
     }
 
-    public function serialize()
+    public function __serialize()
     {
-        return serialize(
+        return 
             [
-                $this->uuid
+                $this->uuid,
             ]
-        );
+        ;
     }
-
-    public function unserialize($dataStr)
+    public function __unserialize(array $data)
     {
-        list(
-            $this->uuid,
-        ) = unserialize($dataStr);
-
+        $this->uuid = $data[0];
     }
 
     /**
