@@ -96,7 +96,7 @@ PUT http://localhost:8088/api/coasters/{coaster_id}
 }
 ```
 
-# 5. DEV APP is allow only for one IP defined in file ./nginx/de.conf in line 34
+# 5. DEV APP is allow only for one IP defined in file ./nginx/dev.conf in line 34
 so edit this IP and restrart your app container
 if you don't know your outside docker IP check the nginx logs in docker container console 
 like this
