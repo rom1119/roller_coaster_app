@@ -40,32 +40,6 @@ class CoasterController extends AbstractFOSRestController
     ) {
     }
 
-    #[Route('/api/test', methods:'GET')]
-    public function testAction(
-        Request $request,
-        RedisCoasterPersister $redisCoasterPersister,
-        ) 
-    {
-        $redisCoasterPersister->findAll();
-        // $loop = Loop::get();
-        // $redisFactory = new RedisFactory($loop);
-        $host = $this->c->getParameter('redis_host');
-        $port = $this->c->getParameter('redis_port');
-        // $redis = new \Redis();
-        // $redis->connect($host, (int)$port);
-        // $redis->auth('foobared');
-
-        // $redis->set('last_message', $request->query->get('asd'));
-
-        // $redis->publish('new_event', $request->query->get('asd'));
-        // $redis = $redisFactory->createLazyClient('redis://192.168.16.5:6379?password=foobared');
-
-                // $loop->run();
-
-
-        return $this->createApiResponse(['a' => 'ok'], Response::HTTP_CREATED);
-    }
-
     #[Route('/api/coasters', methods:'POST')]
     public function createAction(
         Request $request  

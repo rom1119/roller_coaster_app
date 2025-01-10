@@ -54,7 +54,7 @@ class RedisMonitoring implements StatisticMonitoring
    public function runMonitoring()
    {
       $loop = Loop::get();
-      $timer = $loop->addPeriodicTimer(5, function () {
+      $timer = $loop->addPeriodicTimer(10, function () {
          $statistic = $this->statistics->generateAll();
          echo implode(PHP_EOL, [$statistic['time'], implode(PHP_EOL, $statistic['items']) ]);
          

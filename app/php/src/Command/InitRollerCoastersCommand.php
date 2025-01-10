@@ -1,7 +1,6 @@
 <?php
 namespace App\Command;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -19,14 +18,6 @@ class InitRollerCoastersCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-
-        if (false) {
-
-
-            // $this->em->persist();
-            // $this->em->flush();
-
-        }
         // this method must return an integer number with the "exit status code"
         // of the command. You can also use these constants to make code more readable
 
