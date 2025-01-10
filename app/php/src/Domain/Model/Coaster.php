@@ -167,10 +167,9 @@ class Coaster
     public function wagonsTotalPlaces() : int 
     {
         $total = 0;
-        array_map(function(Wagon $el) use ($total) {
+        array_map(function(Wagon $el) use (&$total) {
             $total += $el->getNumberOfPlaces();
         }, $this->wagons);
-
         return $total;
     }
     public function minNeededStaff() : int 

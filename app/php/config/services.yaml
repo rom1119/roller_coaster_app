@@ -34,6 +34,9 @@ services:
     # notification_logger:
     #     class: Psr\Log\LoggerInterface
     #     factory: ['@monolog.logger', notification]
+    App\Domain\CoasterPersister: '@App\Persister\RedisCoasterPersister'     
+    # test: true 
+    # App\Domain\CoasterPersister: '@App\Persister\InMemoryCoasterPersister'
 
     App\RedisMonitoring: 
         arguments:
@@ -68,11 +71,11 @@ services:
 
     App\Domain\DomainEventListener:
         arguments:
-        - !tagged 'domain.event_handler'
+        - !tagged_iterator 'domain.event_handler'
         
         
     App\Domain\ConstraintChecker:
         arguments:
-        - !tagged 'domain.coaster_working_constraint'
+        - !tagged_iterator 'domain.coaster_working_constraint'
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

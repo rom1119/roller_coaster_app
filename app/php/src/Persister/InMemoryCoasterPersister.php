@@ -4,55 +4,31 @@ namespace App\Persister;
 
 use App\Domain\CoasterPersister;
 use App\Domain\Model\BaseCoaster;
+use App\Domain\Model\Coaster;
+use App\Domain\Model\CoasterID;
 
-class InMemoryCoasterPersister
+class InMemoryCoasterPersister implements CoasterPersister
 {
+    private array $data = [];
 
-
-    // private array $data = [];
-
-
-    public function persist( $model): InMemoryCoaster
+    public function persist( Coaster $model): Coaster
     {
+        $id = $model->getUuid()->getUuid();
+        $this->data[$id] = $model;
 
-        $Coaster = new InMemoryCoaster();
-        $id = rand(1000, 9000000);
-        $Coaster->setId($id);
+        return $model;
+    }
 
+    public function findCoaster(CoasterID $uuid): ?Coaster
+    {
+        return $this->data[(string)$uuid];
+    }
 
-        // $this->data[$id] = $Coaster;
-
-        return $Coaster;
-        
+    public function findAll(): array
+    {
+        return $this->data;
     }
 
   
-    // public function getById(int $id): BaseCoaster
-    // {
-    //     return $this->data[$id];
-    // }
-
-    // public function getAllSchedules(string $filter = 'all', int $limit = 4): array
-    // {
-    //     $sorted = $this->data;
-
-    //     if ($filter == 'all') {
-    //         return array_slice($sorted, 0, $limit);
-    //     }
-
-    //     $res = [];
-    //     foreach ($sorted as $item) {
-    //         if (count($res) == $limit) {
-    //             break;
-    //         }
-    //         if (!$item->isExcluded()) {
-    //             $res[] = $item;
-    //         }
-    //     }
-
-        
-    //     return $res;
-    // }
-
   
 }

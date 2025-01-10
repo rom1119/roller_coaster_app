@@ -5,7 +5,6 @@ namespace App\Domain\Handler;
 use App\Domain\DomainEvent;
 use App\Domain\DomainEventHandler;
 use App\Domain\Event\CoasterChange;
-use App\Domain\Event\CoasterCreate;
 
 class CoasterChangeHandler  extends DomainEventHandler
 {
@@ -39,8 +38,13 @@ class CoasterChangeHandler  extends DomainEventHandler
         if ($oldCoaster->getHourTo() != $newCoster->getHourTo()) {
             $msg[] = 'zmieniono godzinę zakończenia działania kolejki  z ' . $oldCoaster->getHourTo() . ' na ' . $newCoster->getHourTo();
         }
-        $this->printMsg(implode("\n", array: $msg));
 
+        $constraintMessages = $this->constraintChecker->check($newCoster);
+        $coasterStatus = implode(' , ', $constraintMessages);
+        if ($coasterStatus) {
+            $msg[] = 'Problem: ' . $coasterStatus;
+        }
+        $this->printMsg(implode("\n",  $msg));
         $this->logger->logEvent(implode("; ", $msg));
     }
 

@@ -5,14 +5,14 @@ namespace App;
 
 use App\Domain\DomainEvent;
 use App\Domain\DomainEventListener;
-use App\Domain\MonitoringPubSub;
+use App\Domain\StatisticMonitoring;
 use App\Domain\Statistics\StatisticsFactory;
 use App\RedisConnector;
 use Clue\React\Redis\Factory as RedisFactory;
 use React\EventLoop\Loop;
 use React\EventLoop\LoopInterface;
 
-class RedisMonitoring implements MonitoringPubSub
+class RedisMonitoring implements StatisticMonitoring
 {
    private static $namespace = 'monitoring_data';
 
@@ -38,7 +38,6 @@ class RedisMonitoring implements MonitoringPubSub
 
 		$redis->get(self::$namespace . ':last_message')->then(function ($value) {
          echo "Ostatnia wiadomość w Redis: $value\n";
-         // dump($value);
       });
 
       $redis->subscribe('new_event')->then(function () use ($redis) {
@@ -46,8 +45,6 @@ class RedisMonitoring implements MonitoringPubSub
       });
       $listener = $this->domainEventListener;
       $redis->on('message', function ($channel, $message) use ($listener) {
-         // echo "Otrzymano nową wiadomość na kanale '$channel': $message\n";
-         // dump($message);
          $event = unserialize($message);
          $listener->handle($event);
       });
@@ -57,11 +54,10 @@ class RedisMonitoring implements MonitoringPubSub
    public function runMonitoring()
    {
       $loop = Loop::get();
-      $timer = $loop->addPeriodicTimer(1, function () {
+      $timer = $loop->addPeriodicTimer(5, function () {
          $statistic = $this->statistics->generateAll();
          echo implode(PHP_EOL, [$statistic['time'], implode(PHP_EOL, $statistic['items']) ]);
          
-         echo 'Tick' . PHP_EOL;
      });
 
       $this->listenEvents($loop);

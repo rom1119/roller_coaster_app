@@ -20,7 +20,7 @@ class TooManyStaff implements CoasterWorkingConstraint
     public function generateMsg(Coaster $coaster): string
     {
         $overflowStaff = $coaster->getNumberOfStaff() - $coaster->minNeededStaff();
-        return 'W kolejce jest o ' . $overflowStaff . ' zbyt dużo pracowników';
+        return 'W kolejce jest o ' . $overflowStaff . ' za dużo pracowników';
     }
 
 

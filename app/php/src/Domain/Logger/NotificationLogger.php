@@ -21,10 +21,5 @@ class NotificationLogger
         $this->logger->info($msg, $context);
 
     }
-    
-    public function logStatistics(array $statistics): void
-    {
-        $this->logger->info($msg, $context);
 
-    }
 }

@@ -3,13 +3,13 @@
 namespace App\Domain;
 
 use App\Domain\Logger\NotificationLogger;
-use Psr\Log\LoggerInterface;
 
 abstract class DomainEventHandler
 {
     public function __construct(
         protected NotificationLogger $logger,
         protected CoasterPersister $coasterPersister,
+        protected ConstraintChecker $constraintChecker 
         
     ) {
         
@@ -19,8 +19,7 @@ abstract class DomainEventHandler
     public abstract function handle(DomainEvent $domainEvent): void;
 
     protected function printMsg(string $msg) {
-        echo '[Godzina ' . date('h:i') .']' . "\n" .$msg;
-
+        echo '[' . date('Y-m-d h:i:s') .']' . "\n" .$msg;
     }
 
 

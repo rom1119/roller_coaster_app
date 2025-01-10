@@ -1,7 +1,7 @@
 <?php
 namespace App\Command;
 
-use App\Domain\MonitoringPubSub;
+use App\Domain\StatisticMonitoring;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -13,7 +13,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class RollerCoastersMonitoringCommand extends Command
 {
     public function __construct(
-        private MonitoringPubSub $redisMonitoring,
+        private StatisticMonitoring $redisMonitoring,
     ) {
         parent::__construct();
     }

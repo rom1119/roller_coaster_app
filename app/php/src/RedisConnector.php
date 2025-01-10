@@ -43,8 +43,6 @@ class RedisConnector
         $keys = $this->redis->keys($namespace . ':*');
         $result = [];
         foreach($keys as $key) {
-            dump($key);
-            dump($this->redis->get($key));
             $result[] = unserialize($this->redis->get($key));
         }
         return $result;

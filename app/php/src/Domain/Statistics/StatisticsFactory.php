@@ -27,7 +27,7 @@ class StatisticsFactory
         /** @var Coaster $item */
         foreach ($totalItems as $item) {
             $coasterStatus = $this->constraintChecker->check($item);
-            $coasterStatus = implode(' | ', $coasterStatus);
+            $coasterStatus = implode(' , ', $coasterStatus);
             $item = new StatisticsItem($item, $coasterStatus);
             $result['items'][] = $item;
         }

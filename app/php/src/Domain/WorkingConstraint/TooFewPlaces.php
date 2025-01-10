@@ -19,7 +19,7 @@ class TooFewPlaces implements CoasterWorkingConstraint
 
     public function generateMsg(Coaster $coaster): string
     {
-        $lackingPlaces = $coaster->getNumberOfCustomers() - $coaster->wagonsTotalPlaces();
-        return 'Brakuje wagonów na ' . $lackingPlaces . ' klientów';
+        $lackingPlaces = $coaster->wagonsTotalPlaces() - $coaster->getNumberOfCustomers();
+        return 'Zbyt dużo wagonów w kolejce o ' . $lackingPlaces . ' miejsc w wagonach jest nieużywanych';
     }
 }

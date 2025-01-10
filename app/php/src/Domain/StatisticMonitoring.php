@@ -5,7 +5,7 @@ namespace App\Domain;
 
 use App\Domain\DomainEvent;
 
-interface MonitoringPubSub
+interface StatisticMonitoring
 {
    public function runMonitoring();
 

@@ -33,20 +33,49 @@ next update this env variable "redis_host" from this file ./app/app_prod.env
 
 
 
-
-
-- add coasters
-```
-POST http://localhost:8000/api/coasters
-{
-  
-}
-```
-
-
 # 4. running tests
 - first go to docker container with php app and type in commands
   ```
   cd /app
-  php bin/phpunit tests/Tests.php
+  php bin/phpunit tests/UnitTests.php
   ```
+
+# 5. API
+
+- add coasters
+```
+POST http://localhost:8088/api/coasters
+{
+    "liczba_personelu": 10,
+    "liczba_klientow": 200,
+    "dl_trasy": 24,
+    "godziny_od": "7:10",
+    "godziny_do": "17:10"
+}
+```
+
+- add wagon to coaster
+```
+POST http://localhost:8088/api/coasters/{coaster_id}/wagons
+{
+    "ilosc_miejsc": 10,
+    "predkosc_wagonu": 5.9
+}
+```
+
+- delete wagon from coaster
+```
+DELETE http://localhost:8088/api/coasters/{coaster_id}/wagons/{wagon_id}
+
+```
+
+- update coaster
+```
+PUT http://localhost:8088/api/coasters/{coaster_id}
+{
+    "liczba_personelu": 20,
+    "liczba_klientow": 100,
+    "godziny_od": "8:20",
+    "godziny_do": "17:35"
+}
+```

@@ -12,6 +12,7 @@ class StatisticsItem
     private string $wagonAmount;
     private string $staffAmount;
     private string $status;
+    private string $customersDailyAmount;
     
     public function __construct(
         Coaster $item, 
@@ -21,10 +22,11 @@ class StatisticsItem
         $availableWagons = $item->totalWagons();
         $totalWagons = $item->totalWagons();
 
-        $this->name = '1. Kolejka' .  $item->getUuid();
-        $this->workingHours = '2. Godziny działania: ' . $item->getHourFrom() . ' - ' . $item->getHourTo();
-        $this->wagonAmount = '3. Liczba wagonów: ' . $availableWagons . '/' . $totalWagons;
-        $this->staffAmount = '4. Dostępny personel: ' . $availableWagons . '/' . $totalWagons;
+        $this->name = '[Kolejka ' .  $item->getUuid() . ']';
+        $this->workingHours = '1. Godziny działania: ' . $item->getHourFrom() . ' - ' . $item->getHourTo();
+        $this->wagonAmount = '2. Liczba wagonów: ' . $availableWagons . '/' . $totalWagons;
+        $this->staffAmount = '3. Dostępny personel: ' . $availableWagons . '/' . $totalWagons;
+        $this->customersDailyAmount = '4. Klienci dziennie: ' . $item->getNumberOfCustomers();
         if ($statusArg) {
             $this->status = '5. Problem: ' . $statusArg;
         } else {
@@ -42,7 +44,7 @@ class StatisticsItem
         $res[] = $this->staffAmount;
         $res[] = $this->status;
 
-        return implode(PHP_EOL, $res);
+        return implode(PHP_EOL, $res) . PHP_EOL;
 
     }
 

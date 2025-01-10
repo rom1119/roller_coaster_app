@@ -24,6 +24,11 @@ class WagonCreateHandler  extends DomainEventHandler
         $wagon =$event ->getWagon();
 
         $msg = 'Dodanow nowy wagon o parametrach prędkość=' . $wagon->getSpeed() . ' oraz o pojemności=' . $wagon->getNumberOfPlaces() .  ' do kolejki' . $event->getCoaster();
+        $constraintMessages = $this->constraintChecker->check($coster);
+        $coasterStatus = implode(' , ', $constraintMessages);
+        if ($coasterStatus) {
+            $msg .= 'Problem: ' . $coasterStatus;
+        }
         $this->printMsg($msg);
 
         $this->logger->logEvent($msg);

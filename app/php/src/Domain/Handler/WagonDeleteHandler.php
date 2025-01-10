@@ -24,8 +24,13 @@ class WagonDeleteHandler  extends DomainEventHandler
         $wagon =$event ->getWagonOld();
 
         $msg = 'Usunięto wagon o parametrach prędkość=' . $wagon->getSpeed() . ' oraz o pojemności=' . $wagon->getNumberOfPlaces() .  ' do kolejki' . $event->getCoaster();
+        
+        $constraintMessages = $this->constraintChecker->check($coster);
+        $coasterStatus = implode(' , ', $constraintMessages);
+        if ($coasterStatus) {
+            $msg .= 'Problem: ' . $coasterStatus;
+        }
         $this->printMsg($msg);
-
         $this->logger->logEvent($msg);
     }
 
