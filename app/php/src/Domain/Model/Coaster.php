@@ -153,13 +153,19 @@ class Coaster
     /**
      * Get the value of wagons
      */ 
-    public function getWagons()
+    public function getFirstWagon()
+    {
+        $firstKey = array_key_first($this->wagons);
+
+        return $this->wagons[$firstKey];
+    } 
+   public function getWagons()
     {
         return $this->wagons;
     }
 
 
-    public function availableWagons() : int
+    public function availableWagons()
     {
         
     }
