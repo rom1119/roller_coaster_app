@@ -44,6 +44,7 @@ next update this env variable "redis_host" in this file ./app/app_prod.env
   ```
   cd /app
   php bin/phpunit tests/UnitTests.php
+  php bin/phpunit tests/IntegrationTests.php
   ```
 
 2. running monitoring coasters
@@ -51,6 +52,13 @@ next update this env variable "redis_host" in this file ./app/app_prod.env
   ```
   cd /app
   php bin/console app:roller-coasters-monitoring
+  ```
+  
+3. running init coaster
+- first go to docker container with php app and type in command
+  ```
+  cd /app
+  php bin/console app:init-roller-coasters
   ```
 
 # 5. API
