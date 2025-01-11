@@ -21,7 +21,7 @@ RUN apk add --no-cache pcre-dev $PHPIZE_DEPS \
 
 WORKDIR /app
 
-COPY ./ /app
+COPY ./php /app
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 EXPOSE 9000
