@@ -6,9 +6,8 @@ use App\Domain\DomainEvent;
 use App\Domain\DomainEventHandler;
 use App\Domain\Event\WagonDelete;
 
-class WagonDeleteHandler  extends DomainEventHandler
+class WagonDeleteHandler extends DomainEventHandler
 {
-
     public function getName(): string
     {
         return WagonDelete::class;
@@ -21,18 +20,16 @@ class WagonDeleteHandler  extends DomainEventHandler
         }
 
         $coster = $this->coasterPersister->findCoaster($event->getCoaster()->getUuid());
-        $wagon =$event ->getWagonOld();
+        $wagon = $event->getWagonOld();
 
-        $msg = 'Usunięto wagon o parametrach prędkość=' . $wagon->getSpeed() . ' oraz o pojemności=' . $wagon->getNumberOfPlaces() .  ' do kolejki' . $event->getCoaster();
-        
+        $msg = 'Usunięto wagon o parametrach prędkość='.$wagon->getSpeed().' oraz o pojemności='.$wagon->getNumberOfPlaces().' do kolejki'.$event->getCoaster();
+
         $constraintMessages = $this->constraintChecker->check($coster);
         $coasterStatus = implode(' , ', $constraintMessages);
         if ($coasterStatus) {
-            $msg .= 'Problem: ' . $coasterStatus;
+            $msg .= 'Problem: '.$coasterStatus;
         }
         $this->printMsg($msg);
         $this->logger->logEvent($msg);
     }
-
-
 }

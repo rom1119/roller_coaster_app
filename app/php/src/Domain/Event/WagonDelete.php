@@ -6,23 +6,23 @@ use App\Domain\DomainEvent;
 use App\Domain\Model\Coaster;
 use App\Domain\Model\Wagon;
 
-class WagonDelete  implements DomainEvent
+class WagonDelete implements DomainEvent
 {
     public function __construct(
-        private Coaster $coaster, 
-        private Wagon $wagonOld, 
+        private Coaster $coaster,
+        private Wagon $wagonOld,
     ) {
-        
     }
 
-    public function getCoaster() : Coaster {
+    public function getCoaster(): Coaster
+    {
         return $this->coaster;
     }
-    
-    public function getWagonOld() : Wagon {
+
+    public function getWagonOld(): Wagon
+    {
         return $this->wagonOld;
     }
-
 
     public function __serialize()
     {
@@ -44,5 +44,4 @@ class WagonDelete  implements DomainEvent
     {
         return WagonDelete::class;
     }
-
 }

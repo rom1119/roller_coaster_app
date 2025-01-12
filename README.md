@@ -60,6 +60,13 @@ next update this env variable "redis_host" in this file ./app/app_prod.env
   cd /app
   php bin/console app:init-roller-coasters
   ```
+  
+3. running clean code command cs-fixer
+- first go to docker container with php app and type in command
+  ```
+  cd /app
+  php tools/php-cs-fixer/vendor/bin/php-cs-fixer fix src
+  ```
 
 # 5. API
 access host to API

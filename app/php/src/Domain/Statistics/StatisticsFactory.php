@@ -7,12 +7,10 @@ use App\Domain\ConstraintChecker;
 use App\Domain\DomainEvent;
 use App\Domain\Model\Coaster;
 
-class StatisticsFactory 
+class StatisticsFactory
 {
-    
-    public function __construct(private CoasterPersister $persister, private ConstraintChecker $constraintChecker )
+    public function __construct(private CoasterPersister $persister, private ConstraintChecker $constraintChecker)
     {
-        
     }
 
     public function generateAll(): array
@@ -20,7 +18,7 @@ class StatisticsFactory
         $totalItems = $this->persister->findAll();
 
         $result = [
-            'time' => '[Godzina ' . date('h:i') .']',
+            'time' => '[Godzina '.date('h:i').']',
             'items' => [],
         ];
 
@@ -34,10 +32,9 @@ class StatisticsFactory
 
         return $result;
     }
+
     public function generateByEvent(DomainEvent $domainEvent): ?string
     {
         return null;
     }
-
-
 }

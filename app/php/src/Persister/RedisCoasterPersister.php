@@ -11,13 +11,14 @@ class RedisCoasterPersister implements CoasterPersister
 {
     private static $namespace = 'coaster_namespace';
 
-    public function __construct(private RedisConnector $redis) {
-        
+    public function __construct(private RedisConnector $redis)
+    {
     }
 
-    public function persist(Coaster $model):  Coaster
+    public function persist(Coaster $model): Coaster
     {
         $this->redis->saveObject(self::$namespace, $model->getUuid(), $model);
+
         return $model;
     }
 
@@ -27,6 +28,7 @@ class RedisCoasterPersister implements CoasterPersister
         if (!$model) {
             return null;
         }
+
         return $model;
     }
 
@@ -34,5 +36,4 @@ class RedisCoasterPersister implements CoasterPersister
     {
         return $this->redis->getListByNamespace(self::$namespace);
     }
-
 }

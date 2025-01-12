@@ -5,7 +5,6 @@ namespace App\Form;
 use App\Domain\Model\Coaster;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TimeType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -16,13 +15,13 @@ class CreateCoasterType extends AbstractType
     {
         $builder
             ->add('liczba_personelu', IntegerType::class, [
-                'property_path' => 'numberOfStaff'
+                'property_path' => 'numberOfStaff',
             ])
             ->add('liczba_klientow', IntegerType::class, [
-                'property_path' => 'numberOfCustomers'
+                'property_path' => 'numberOfCustomers',
             ])
             ->add('dl_trasy', IntegerType::class, [
-                'property_path' => 'distance'
+                'property_path' => 'distance',
             ])
             ->add('godziny_od', TimeType::class, [
                 'property_path' => 'hourFrom',
@@ -40,9 +39,9 @@ class CreateCoasterType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'data_class' => Coaster::class,
             'csrf_protection' => false,
-        ));
+        ]);
     }
 }

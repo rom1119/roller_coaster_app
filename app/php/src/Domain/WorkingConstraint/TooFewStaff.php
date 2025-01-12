@@ -9,7 +9,6 @@ use App\Domain\Model\Coaster;
 
 class TooFewStaff implements CoasterWorkingConstraint
 {
-
     public function isSatisfied(Coaster $coaster): bool
     {
         $minStaff = $coaster->minNeededStaff();
@@ -20,6 +19,7 @@ class TooFewStaff implements CoasterWorkingConstraint
     public function generateMsg(Coaster $coaster): string
     {
         $lackingStaff = $coaster->minNeededStaff() - $coaster->getNumberOfStaff();
-        return 'Brakuje ' . $lackingStaff . ' pracowników';
+
+        return 'Brakuje '.$lackingStaff.' pracowników';
     }
 }

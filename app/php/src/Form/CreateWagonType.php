@@ -15,19 +15,19 @@ class CreateWagonType extends AbstractType
     {
         $builder
             ->add('ilosc_miejsc', IntegerType::class, [
-                'property_path' => 'numberOfPlaces'
+                'property_path' => 'numberOfPlaces',
             ])
             ->add('predkosc_wagonu', NumberType::class, [
-                'property_path' => 'speed'
+                'property_path' => 'speed',
             ])
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'data_class' => Wagon::class,
             'csrf_protection' => false,
-        ));
+        ]);
     }
 }

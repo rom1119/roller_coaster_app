@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Command;
 
 use App\Domain\CoasterFacade;
@@ -9,13 +10,12 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-
 // the name of the command is what  type after "php bin/console"
 #[AsCommand(name: 'app:init-roller-coasters')]
 class InitRollerCoastersCommand extends Command
 {
     public function __construct(
-        private CoasterFacade $coasterFacade
+        private CoasterFacade $coasterFacade,
     ) {
         parent::__construct();
     }
@@ -35,9 +35,8 @@ class InitRollerCoastersCommand extends Command
         $wagon->setSpeed(speed: 4.5);
         $coaster = $this->coasterFacade->addWagon($wagon, $coaster->getUuid());
 
-        $output->writeln('added one coaster w ID=' . $coaster->getUuid());
+        $output->writeln('added one coaster w ID='.$coaster->getUuid());
+
         return Command::SUCCESS;
-
-
     }
 }

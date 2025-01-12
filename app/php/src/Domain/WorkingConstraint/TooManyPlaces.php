@@ -9,7 +9,6 @@ use App\Domain\Model\Coaster;
 
 class TooManyPlaces implements CoasterWorkingConstraint
 {
-
     public function isSatisfied(Coaster $coaster): bool
     {
         $wagonsPlaces = $coaster->wagonsTotalPlaces();
@@ -20,6 +19,7 @@ class TooManyPlaces implements CoasterWorkingConstraint
     public function generateMsg(Coaster $coaster): string
     {
         $lackingPlaces = $coaster->getNumberOfCustomers() - $coaster->wagonsTotalPlaces();
-        return 'Brakuje wagonów na ' . $lackingPlaces . ' klientów';
+
+        return 'Brakuje wagonów na '.$lackingPlaces.' klientów';
     }
 }

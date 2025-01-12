@@ -16,12 +16,11 @@ class UpdateCoasterType extends AbstractType
         $builder
             ->add('liczba_personelu', IntegerType::class, [
                 'property_path' => 'numberOfStaff',
-                'required' => true
+                'required' => true,
             ])
             ->add('liczba_klientow', IntegerType::class, [
                 'property_path' => 'numberOfCustomers',
-                'required' => true
-
+                'required' => true,
             ])
             ->add('godziny_od', TimeType::class, [
                 'property_path' => 'hourFrom',
@@ -39,9 +38,9 @@ class UpdateCoasterType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'data_class' => Coaster::class,
             'csrf_protection' => false,
-        ));
+        ]);
     }
 }

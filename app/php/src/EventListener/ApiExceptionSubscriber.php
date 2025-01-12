@@ -1,6 +1,6 @@
 <?php
-declare(strict_types=1);
 
+declare(strict_types=1);
 
 namespace App\EventListener;
 
@@ -8,10 +8,10 @@ use App\Api\ApiProblem;
 use App\Api\ApiProblemException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
+use Symfony\Component\HttpKernel\KernelEvents;
 
 class ApiExceptionSubscriber implements EventSubscriberInterface
 {
@@ -27,7 +27,7 @@ class ApiExceptionSubscriber implements EventSubscriberInterface
     public function onKernelException(ExceptionEvent $event)
     {
         // only reply to /api URLs
-        if (strpos($event->getRequest()->getPathInfo(), '/api') !== 0) {
+        if (0 !== strpos($event->getRequest()->getPathInfo(), '/api')) {
             return;
         }
         $e = $event->getThrowable();
@@ -38,14 +38,11 @@ class ApiExceptionSubscriber implements EventSubscriberInterface
             return;
         }
 
-
         $this->logException($e);
 
         if ($e instanceof ApiProblemException) {
             $apiProblem = $e->getApiProblem();
         } else {
-
-
             $apiProblem = new ApiProblem(
                 $statusCode
             );
@@ -63,7 +60,7 @@ class ApiExceptionSubscriber implements EventSubscriberInterface
 
         $data = $apiProblem->toArray();
         // making type a URL, to a temporarily fake page
-        if ($data['type'] != 'about:blank') {
+        if ('about:blank' != $data['type']) {
             $data['type'] = 'http://localhost:8000/docs/errors#'.$data['type'];
         }
 
@@ -78,13 +75,13 @@ class ApiExceptionSubscriber implements EventSubscriberInterface
 
     public static function getSubscribedEvents(): array
     {
-        return array(
-            KernelEvents::EXCEPTION => 'onKernelException'
-        );
+        return [
+            KernelEvents::EXCEPTION => 'onKernelException',
+        ];
     }
 
     /**
-     * Adapted from the core Symfony exception handling in ExceptionListener
+     * Adapted from the core Symfony exception handling in ExceptionListener.
      *
      * @param \Exception $exception
      */
@@ -93,7 +90,7 @@ class ApiExceptionSubscriber implements EventSubscriberInterface
         $message = sprintf('Uncaught PHP Exception %s: "%s" at %s line %s', get_class($exception), $exception->getMessage(), $exception->getFile(), $exception->getLine());
 
         $isCritical = !$exception instanceof HttpExceptionInterface || $exception->getStatusCode() >= 500;
-        $context = array('exception' => $exception);
+        $context = ['exception' => $exception];
         if ($isCritical) {
             $this->logger->critical($message, $context);
         } else {
