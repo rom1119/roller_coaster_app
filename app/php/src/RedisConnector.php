@@ -9,7 +9,7 @@ class RedisConnector
     public function __construct(string $redisHost, string $redisPort, string $redisPass)
     {
         $this->redis = new \Redis();
-        $this->redis->connect($redisHost, (int) $redisPort);
+        $this->redis->connect($redisHost, (int) $redisPort, 10);
         $this->redis->auth($redisPass);
     }
 

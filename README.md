@@ -5,8 +5,8 @@ system to help managing roller coasters to optymize number of wagons and coaster
 
 # requirements
 app launched on 
-docker version 20.10.11
-docker-compose 1.29.2
+docker version 27.4.0
+docker-compose 2.31.0
 
 
 # 1. run Redis server 

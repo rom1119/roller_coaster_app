@@ -1,4 +1,3 @@
-version: '3.8'
 services:
   redis-dev:
     container_name: roller_coaster_redis_dev
